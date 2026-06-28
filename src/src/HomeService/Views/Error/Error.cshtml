@@ -1,0 +1,16 @@
+@{
+    ViewBag.Title = "Lỗi";
+}
+
+<div class="page-content">
+    <div class="empty-state" style="margin-top:2rem;">
+        <div class="empty-state-icon" style="background:rgba(239,68,68,.1);color:var(--danger);">
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <h4>Đã có lỗi xảy ra</h4>
+        <p>Vui lòng thử lại sau.</p>
+        <a href="@Url.Action("Index","Home")" class="btn btn-primary">
+            <i class="bi bi-house me-1"></i>Về trang chủ
+        </a>
+    </div>
+</div>

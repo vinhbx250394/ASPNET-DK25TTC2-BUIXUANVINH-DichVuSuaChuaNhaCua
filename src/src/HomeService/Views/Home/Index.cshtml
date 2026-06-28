@@ -1,0 +1,264 @@
+@model IEnumerable<HomeService.Models.Service>
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<!-- HERO SECTION -->
+<section class="hero-section" style="min-height:520px;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Dịch vụ sửa chữa #1 tại Hà Nội
+                    </div>
+                    <h1 class="hero-title">
+                        Nhà cửa hỏng?<br />
+                        <span class="text-gradient">Chúng tôi sửa ngay!</span>
+                    </h1>
+                    <p class="hero-desc">
+                        Đội ngũ thợ lành nghề, có mặt trong 30 phút. Báo giá minh bạch, bảo hành 12 tháng. Thanh toán sau khi nghiệm thu.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="@Url.Action("Services","Home")" class="btn-accent">
+                            <i class="bi bi-grid me-2"></i>Xem dịch vụ
+                        </a>
+                        <a href="@Url.Action("Register","Account")" class="btn-outline-light">
+                            <i class="bi bi-person-plus me-2"></i>Đăng ký miễn phí
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div>
+                            <div class="stat-num">500+</div>
+                            <div class="stat-label">Khách hàng</div>
+                        </div>
+                        <div>
+                            <div class="stat-num">6</div>
+                            <div class="stat-label">Loại dịch vụ</div>
+                        </div>
+                        <div>
+                            <div class="stat-num">4.9</div>
+                            <div class="stat-label">Đánh giá</div>
+                        </div>
+                        <div>
+                            <div class="stat-num">12 tháng</div>
+                            <div class="stat-label">Bảo hành</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-img-container">
+                    <img src="https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=1200&q=85"
+                         class="hero-img" alt="Home Repair Service" />
+                    <div class="floating-card floating-card-1">
+                        <i class="bi bi-shield-check text-success"></i>
+                        <div style="font-size:.75rem;font-weight:600;">Bảo hành 12 tháng</div>
+                    </div>
+                    <div class="floating-card floating-card-2">
+                        <i class="bi bi-lightning-charge text-warning"></i>
+                        <div style="font-size:.75rem;font-weight:600;">Có mặt trong 30 phút</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Dịch vụ của chúng tôi</h2>
+            <div class="section-divider"></div>
+            <p style="margin-top:1rem;">Đa dạng dịch vụ sửa chữa, lắp đặt cho mọi nhu cầu của gia đình bạn</p>
+        </div>
+        <div class="row g-4">
+            @{
+                var serviceImages = new[] {
+                    "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80",
+                    "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80",
+                    "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&q=80",
+                    "https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=600&q=80",
+                    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+                    "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=600&q=80"
+                };
+                var i = 0;
+            }
+            @foreach(var s in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="service-card-img-wrap">
+                            <img src="@serviceImages[i % serviceImages.Length]" class="service-card-img" alt="@s.Title" />
+                            <span class="service-card-badge">@s.Category?.Name</span>
+                        </div>
+                        <div class="service-card-body">
+                            <h5 class="service-card-title">@s.Title</h5>
+                            <p class="service-card-desc">@s.Description</p>
+                            <div class="service-card-footer">
+                                <div>
+                                    <div class="service-card-price">@s.Price?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) đ</div>
+                                    <div style="font-size:.72rem;color:var(--gray-400);">Giá đã bao gồm VAT</div>
+                                </div>
+                                <a href="@Url.Action("ServiceDetails","Home", new { id = s.Id })"
+                                   class="btn btn-primary btn-sm">
+                                    Chi tiết <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        </div>
+        <div class="text-center mt-4">
+            <a href="@Url.Action("Services","Home")" class="btn btn-primary px-4">
+                Xem tất cả dịch vụ <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="section bg-light-soft">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+                <div style="position:relative;">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=85"
+                         style="width:100%;border-radius:20px;box-shadow:var(--shadow-lg);object-fit:cover;aspect-ratio:4/5;" alt="Technician" />
+                    <div style="position:absolute;bottom:-20px;right:-20px;background:#fff;border-radius:16px;padding:1.25rem 1.5rem;box-shadow:var(--shadow-lg);">
+                        <div style="font-size:1.5rem;font-weight:800;color:var(--primary);">10+</div>
+                        <div style="font-size:.78rem;color:var(--gray-500);font-weight:600;">Năm kinh nghiệm</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <h2 style="font-size:1.75rem;margin-bottom:1rem;">Tại sao 500+ khách hàng<br />chọn DichVuSuaChuaNhaCua?</h2>
+                <div class="section-divider" style="margin:0 0 2rem 0;"></div>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="feature-card text-start">
+                            <div class="feature-icon-wrap feature-icon-blue"><i class="bi bi-lightning-charge"></i></div>
+                            <h5>Phản hồi nhanh</h5>
+                            <p>Có mặt tại nhà trong 30 phút kể từ khi gọi</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="feature-card text-start">
+                            <div class="feature-icon-wrap feature-icon-green"><i class="bi bi-shield-check"></i></div>
+                            <h5>Bảo hành dài hạn</h5>
+                            <p>Bảo hành 12 tháng cho mọi dịch vụ</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="feature-card text-start">
+                            <div class="feature-icon-wrap feature-icon-amber"><i class="bi bi-currency-dollar"></i></div>
+                            <h5>Giá minh bạch</h5>
+                            <p>Báo giá trước, không phí ẩn, thanh toán sau</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="feature-card text-start">
+                            <div class="feature-icon-wrap feature-icon-purple"><i class="bi bi-people"></i></div>
+                            <h5>Thợ chuyên nghiệp</h5>
+                            <p>Đội ngũ được đào tạo bài bản, nhiều năm kinh nghiệm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROCESS SECTION -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Quy trình 4 bước</h2>
+            <div class="section-divider"></div>
+            <p style="margin-top:1rem;">Đặt dịch vụ cực kỳ đơn giản chỉ trong vài phút</p>
+        </div>
+        <div class="row g-5">
+            @{
+                var steps = new[] {
+                    (Icon: "bi-search", Title: "Chọn dịch vụ", Desc: "Duyệt danh sách dịch vụ và chọn công việc phù hợp với nhu cầu"),
+                    (Icon: "bi-calendar-check", Title: "Đặt lịch", Desc: "Chọn ngày giờ thuận tiện, nhập địa chỉ và mô tả yêu cầu"),
+                    (Icon: "bi-wrench", Title: "Thợ đến làm", Desc: "Thợ đến đúng giờ, khảo sát và thực hiện công việc chuyên nghiệp"),
+                    (Icon: "bi-check-circle", Title: "Nghiệm thu", Desc: "Kiểm tra kết quả, thanh toán và nhận phiếu bảo hành")
+                };
+            }
+            @foreach(var step in steps)
+            {
+                <div class="col-lg-3 col-6">
+                    <div class="step-item">
+                        <div class="step-num"><i class="@step.Icon"></i></div>
+                        @if (step != steps.Last())
+                        {
+                            <div class="step-connector d-none d-lg-block"></div>
+                        }
+                        <h6>@step.Title</h6>
+                        <p>@step.Desc</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section bg-light-soft">
+    <div class="container">
+        <div class="section-header">
+            <h2>Khách hàng nói gì về chúng tôi</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="row g-4">
+            @{
+                var testimonials = new[] {
+                    (Name: "Nguyễn Thu Hà", Location: "Cầu Giấy, Hà Nội", Text: "Thợ đến đúng giờ, làm việc rất chuyên nghiệp. Nhà mình bị rò rỉ ống nước, thợ sửa xong trong 2 tiếng. Giá rất hợp lý!", Stars: 5),
+                    (Name: "Trần Văn Minh", Location: "Thanh Xuân, Hà Nội", Text: "Đặt lịch sửa điều hòa qua app, 30 phút sau thợ đã có mặt. Điều hòa hoạt động tốt đến giờ. Rất hài lòng!", Stars: 5),
+                    (Name: "Lê Thị Mai", Location: "Đống Đa, Hà Nội", Text: "Dịch vụ sơn nhà cho căn hộ 70m2. Kết quả vượt mong đợi, thợ làm cẩn thận, sạch sẽ. Sẽ giới thiệu cho bạn bè.", Stars: 5)
+                };
+            }
+            @foreach(var t in testimonials)
+            {
+                <div class="col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            @for (var s = 0; s < t.Stars; s++) { <i class="bi bi-star-fill"></i> }
+                        </div>
+                        <p class="testimonial-text">"@t.Text"</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">@t.Name[0]</div>
+                            <div>
+                                <div class="testimonial-name">@t.Name</div>
+                                <div class="testimonial-role">@t.Location</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="section">
+    <div class="container">
+        <div class="cta-section">
+            <h2>Sẵn sàng sửa chữa nhà cửa?</h2>
+            <p>Đăng ký hoàn toàn miễn phí và đặt dịch vụ trong vài phút</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="@Url.Action("Register","Account")" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Đăng ký ngay
+                </a>
+                <a href="tel:0123456789" class="btn btn-accent btn-lg">
+                    <i class="bi bi-telephone me-2"></i>0123 456 789
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,94 @@
+@{
+    ViewBag.Title = "Liên hệ";
+}
+
+<div class="page-header">
+    <h1><i class="bi bi-telephone me-2"></i>Liên hệ</h1>
+    <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
+</div>
+
+<div class="page-content">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <h5 style="margin-bottom:1.5rem;">Thông tin liên hệ</h5>
+            @{
+                var contacts = new[] {
+                    (Bg: "rgba(37,99,235,.1)", Color: "var(--primary)", Icon: "bi-geo-alt-fill", Title: "Địa chỉ", Desc: "Số 123 Đường Nguyễn Trãi, Quận Thanh Xuân, Hà Nội"),
+                    (Bg: "rgba(16,185,129,.1)", Color: "var(--success)", Icon: "bi-telephone-fill", Title: "Hotline", Desc: "0123 456 789 (Hỗ trợ 24/7)"),
+                    (Bg: "rgba(239,68,68,.1)", Color: "var(--danger)", Icon: "bi-envelope-fill", Title: "Email", Desc: "contact@DichVuSuaChuaNhaCua.vn"),
+                    (Bg: "rgba(245,158,11,.1)", Color: "var(--accent)", Icon: "bi-clock-fill", Title: "Giờ làm việc", Desc: "Thứ 2 - Thứ 6: 8:00 - 18:00\nThứ 7: 8:00 - 12:00")
+                };
+            }
+            @foreach(var c in contacts)
+            {
+                <div class="contact-info-card mb-3">
+                    <div class="contact-info-icon" style="background:@c.Bg;color:@c.Color;">
+                        <i class="@c.Icon"></i>
+                    </div>
+                    <div>
+                        <h6>@c.Title</h6>
+                        <p style="white-space:pre-line;">@c.Desc</p>
+                    </div>
+                </div>
+            }
+
+            <div class="mt-4 p-3 bg-light-soft" style="border-radius:12px;">
+                <h6 style="font-weight:700;font-size:.88rem;margin-bottom:.75rem;">Theo dõi chúng tôi</h6>
+                <div class="d-flex gap-2">
+                    <a href="#" class="social-link" style="background:var(--primary);color:#fff;">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="social-link" style="background:var(--danger);color:#fff;">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                    <a href="#" class="social-link" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">
+                        <i class="bi bi-send text-primary me-2"></i>Gửi tin nhắn
+                    </h5>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" placeholder="Nhập họ và tên" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" placeholder="0xxx xxx xxx" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="email@example.com" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chủ đề</label>
+                            <select class="form-select">
+                                <option>Tư vấn dịch vụ</option>
+                                <option>Báo giá</option>
+                                <option>Khiếu nại</option>
+                                <option>Hợp tác kinh doanh</option>
+                                <option>Khác</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Nội dung</label>
+                            <textarea class="form-control" rows="5" placeholder="Nhập nội dung tin nhắn..."></textarea>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2" type="button">
+                            <i class="bi bi-send me-2"></i>Gửi tin nhắn
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

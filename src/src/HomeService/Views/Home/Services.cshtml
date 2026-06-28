@@ -1,0 +1,72 @@
+@model IEnumerable<HomeService.Models.Service>
+@{
+    ViewBag.Title = string.IsNullOrEmpty(ViewBag.SelectedCategory) ? "Dịch vụ" : ViewBag.SelectedCategory;
+}
+
+<div class="page-header">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h1><i class="bi bi-grid me-2"></i>Dịch vụ sửa chữa</h1>
+            <p>@(string.IsNullOrEmpty(ViewBag.SelectedCategory) ? "Tất cả dịch vụ" : "Danh mục: " + ViewBag.SelectedCategory) — giá minh bạch, bảo hành 12 tháng</p>
+        </div>
+        <a href="@Url.Action("Index","Home")" class="btn btn-light">
+            <i class="bi bi-house me-1"></i>Về trang chủ
+        </a>
+    </div>
+</div>
+
+<div class="page-content">
+    <!-- Filter chips -->
+    <div class="filter-chips">
+        <a href="@Url.Action("Services","Home")"
+           class="filter-chip @(string.IsNullOrEmpty(ViewBag.SelectedCategory) ? "active" : "")">
+            <i class="bi bi-grid"></i>Tất cả
+        </a>
+        @foreach(var cat in ViewBag.AllCategories)
+        {
+            <a href="@Url.Action("Services","Home", new { category = cat.Name })"
+               class="filter-chip @(ViewBag.SelectedCategory == cat.Name ? "active" : "")">
+                @cat.Name
+            </a>
+        }
+    </div>
+
+    <!-- Services Grid -->
+    <div class="row g-4">
+        @{
+            var serviceImages = new[] {
+                "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80",
+                "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80",
+                "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&q=80",
+                "https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=600&q=80",
+                "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+                "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=600&q=80"
+            };
+            var imgIdx = 0;
+        }
+        @foreach(var s in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card">
+                    <div class="service-card-img-wrap">
+                        <img src="@serviceImages[imgIdx % serviceImages.Length]" class="service-card-img" alt="@s.Title" />
+                        <span class="service-card-badge">@s.Category?.Name</span>
+                    </div>
+                    <div class="service-card-body">
+                        <h5 class="service-card-title">@s.Title</h5>
+                        <p class="service-card-desc">@s.Description</p>
+                        <div class="service-card-footer">
+                            <div>
+                                <div class="service-card-price">@s.Price?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) đ</div>
+                            </div>
+                            <a href="@Url.Action("ServiceDetails","Home", new { id = s.Id })" class="btn btn-primary btn-sm">
+                                Chi tiết <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            imgIdx++;
+        }
+    </div>
+</div>

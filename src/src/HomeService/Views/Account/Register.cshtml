@@ -1,0 +1,92 @@
+@model HomeService.Models.User
+@{
+    ViewBag.Title = "Đăng ký";
+}
+
+<div class="page-content" style="background:linear-gradient(135deg, var(--gray-50) 0%, #eef2ff 100%);">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <div class="auth-card">
+                <div class="row g-0">
+                    <div class="col-md-5 d-none d-md-block">
+                        <div class="auth-card-img amber h-100">
+                            <div class="auth-card-icon">
+                                <i class="bi bi-rocket-takeoff"></i>
+                            </div>
+                            <h3>Bắt đầu ngay!</h3>
+                            <p>Tạo tài khoản miễn phí để đặt dịch vụ sửa chữa nhanh chóng.</p>
+                            <div class="mt-5 fs-3">
+                                <i class="bi bi-lightning-charge opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="auth-card-body">
+                            <div class="text-center mb-4">
+                                <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                                     style="width:52px;height:52px;background:rgba(245,158,11,.15);">
+                                    <i class="bi bi-person-plus-fill text-warning fs-4"></i>
+                                </div>
+                                <h2>Tạo tài khoản</h2>
+                                <p class="subtitle">Đăng ký miễn phí trong 30 giây</p>
+                            </div>
+
+                            @if (ViewData.ModelState.ErrorCount > 0)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <div>
+                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                        {
+                                            <div>@error.ErrorMessage</div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            <form method="post">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Tên đăng nhập *</label>
+                                        <input asp-for="Username" class="form-control" placeholder="Username" required />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Họ và tên *</label>
+                                        <input asp-for="FullName" class="form-control" placeholder="Họ và tên" required />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Số điện thoại *</label>
+                                        <input asp-for="Phone" class="form-control" placeholder="0xxx xxx xxx" required />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Địa chỉ</label>
+                                        <input asp-for="Address" class="form-control" placeholder="Địa chỉ" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Mật khẩu *</label>
+                                    <input asp-for="PasswordHash" type="password" class="form-control" placeholder="Tối thiểu 6 ký tự" required />
+                                </div>
+
+                                <button class="btn btn-accent w-100 py-2 mt-2" type="submit">
+                                    <i class="bi bi-rocket-takeoff me-2"></i>Tạo tài khoản
+                                </button>
+                            </form>
+
+                            <div class="auth-card-footer">
+                                <p class="mb-0">
+                                    Đã có tài khoản?
+                                    <a href="@Url.Action("Login","Account")">Đăng nhập</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+@model IEnumerable<HomeService.Models.Booking>
+@{
+    ViewBag.Title = "Quản lý đơn đặt";
+}
+
+<div class="page-header admin">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h1><i class="bi bi-list-check me-2"></i>Quản lý đơn đặt</h1>
+            <p>@Model.Count() đơn đặt</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="@Url.Action("Index","Admin")" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-speedometer2 me-1"></i>Tổng quan
+            </a>
+            <a href="@Url.Action("Services","Admin")" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-grid me-1"></i>Dịch vụ
+            </a>
+            <a href="@Url.Action("Index","Home")" class="btn btn-light btn-sm text-dark">
+                <i class="bi bi-house me-1"></i>Website
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <h4>Chưa có đơn đặt nào</h4>
+        </div>
+    }
+    else
+    {
+        <div class="table-modern">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Khách hàng</th>
+                        <th>Dịch vụ</th>
+                        <th>Ngày hẹn</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var b in Model)
+                    {
+                        <tr>
+                            <td><span style="font-weight:700;color:var(--primary);">#@b.Id</span></td>
+                            <td>
+                                <div style="font-weight:600;">@b.FullName</div>
+                                <div style="font-size:.78rem;color:var(--gray-400);">@b.Phone</div>
+                                <div style="font-size:.78rem;color:var(--gray-400);">@b.Address</div>
+                            </td>
+                            <td>
+                                <div style="font-weight:600;">@b.Service?.Title</div>
+                                <div style="font-size:.78rem;color:var(--primary);font-weight:600;">
+                                    @b.Service?.Price?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) đ
+                                </div>
+                            </td>
+                            <td>@b.ScheduleDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @{
+                                    var (badgeClass, badgeText) = b.Status switch
+                                    {
+                                        "Chờ xử lý" => ("badge-pending", "Chờ xử lý"),
+                                        "Đang sửa" => ("badge-progress", "Đang sửa"),
+                                        "Hoàn thành" => ("badge-done", "Hoàn thành"),
+                                        _ => ("badge-pending", b.Status ?? "")
+                                    };
+                                }
+                                <span class="badge-status @badgeClass">@badgeText</span>
+                            </td>
+                            <td style="color:var(--gray-500);">@b.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <div class="actions">
+                                    <a class="btn btn-sm @(b.Status == "Đang sửa" ? "btn-outline-secondary disabled" : "btn-primary")"
+                                       href="@Url.Action("UpdateStatus","Admin", new { id = b.Id, status = "Đang sửa" })"
+                                       title="Đang sửa">
+                                        <i class="bi bi-wrench"></i>
+                                    </a>
+                                    <a class="btn btn-sm @(b.Status == "Hoàn thành" ? "btn-outline-secondary disabled" : "btn-success")"
+                                       href="@Url.Action("UpdateStatus","Admin", new { id = b.Id, status = "Hoàn thành" })"
+                                       title="Hoàn thành">
+                                        <i class="bi bi-check-lg"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

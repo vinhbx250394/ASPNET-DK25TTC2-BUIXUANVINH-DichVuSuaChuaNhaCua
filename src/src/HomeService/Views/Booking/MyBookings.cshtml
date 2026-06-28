@@ -1,0 +1,126 @@
+@model IEnumerable<HomeService.Models.Booking>
+@{
+    ViewBag.Title = "Đơn của tôi";
+}
+
+<div class="page-header">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h1><i class="bi bi-calendar-check me-2"></i>Đơn đặt của tôi</h1>
+            <p>Quản lý và theo dõi các đơn dịch vụ của bạn</p>
+        </div>
+        <a href="@Url.Action("CreateQuick","Booking")" class="btn btn-accent">
+            <i class="bi bi-plus-lg me-2"></i>Tạo đơn mới
+        </a>
+    </div>
+</div>
+
+<div class="page-content">
+    <!-- Quick Service Cards -->
+    @{
+        var quickServices = new[] {
+            (Icon: "bi-lightning-charge", Color: "#f59e0b", Title: "Sửa điện", Desc: "Ổ cắm, dây điện, cầu dao..."),
+            (Icon: "bi-droplet", Color: "#3b82f6", Title: "Sửa nước", Desc: "Ống nước rò rỉ, vòi, bồn..."),
+            (Icon: "bi-snow2", Color: "#10b981", Title: "Máy lạnh", Desc: "Lắp đặt, vệ sinh, nạp gas..."),
+            (Icon: "bi-palette", Color: "#8b5cf6", Title: "Sơn nhà", Desc: "Sơn tường, trần, nội thất..."),
+            (Icon: "bi-shield-check", Color: "#ef4444", Title: "Chống thấm", Desc: "Ban công, nhà vệ sinh, mái..."),
+            (Icon: "bi-grid", Color: "#64748b", Title: "Khác", Desc: "Các dịch vụ khác...")
+        };
+    }
+
+    <div class="mb-4">
+        <h6 style="font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;">
+            <i class="bi bi-lightning-charge me-1"></i>Đặt nhanh dịch vụ
+        </h6>
+        <div class="row g-3">
+            @foreach(var svc in quickServices)
+            {
+                <div class="col-md-4 col-lg-2">
+                    <a href="@Url.Action("CreateQuick","Booking")" class="text-decoration-none">
+                        <div class="quick-action">
+                            <div class="quick-action-icon" style="background:@svc.Color;color:#fff;">
+                                <i class="@svc.Icon"></i>
+                            </div>
+                            <div class="quick-action-info">
+                                <h6>@svc.Title</h6>
+                                <p>@svc.Desc</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+            <h4>Bạn chưa có đơn đặt nào</h4>
+            <p>Hãy đặt dịch vụ đầu tiên của bạn ngay!</p>
+            <a href="@Url.Action("CreateQuick","Booking")" class="btn btn-primary">
+                <i class="bi bi-grid me-1"></i>Chọn dịch vụ
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 style="margin:0;font-weight:700;">Lịch sử đơn (@Model.Count())</h5>
+            <span class="badge-status" style="background:rgba(37,99,235,.1);color:var(--primary);">
+                @Model.Count() đơn
+            </span>
+        </div>
+
+        <div class="table-modern">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Dịch vụ</th>
+                        <th>Thông tin</th>
+                        <th>Ngày hẹn</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var b in Model.OrderByDescending(x => x.CreatedAt))
+                    {
+                        <tr>
+                            <td><span style="font-weight:700;color:var(--primary);">#@b.Id</span></td>
+                            <td>
+                                <div style="font-weight:600;">@b.Service?.Title</div>
+                                <div style="font-size:.75rem;color:var(--gray-400);">@b.Service?.Category?.Name</div>
+                            </td>
+                            <td>
+                                <div><i class="bi bi-person me-1 text-muted"></i>@b.FullName</div>
+                                <div style="font-size:.78rem;color:var(--gray-400);"><i class="bi bi-telephone me-1"></i>@b.Phone</div>
+                                @if (!string.IsNullOrEmpty(b.Address))
+                                {
+                                    <div style="font-size:.75rem;color:var(--gray-400);"><i class="bi bi-geo-alt me-1"></i>@b.Address</div>
+                                }
+                            </td>
+                            <td>@b.ScheduleDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @{
+                                    var (badgeClass, badgeText) = b.Status switch
+                                    {
+                                        "Chờ xử lý" => ("badge-pending", "Chờ xử lý"),
+                                        "Đang sửa" => ("badge-progress", "Đang sửa"),
+                                        "Hoàn thành" => ("badge-done", "Hoàn thành"),
+                                        _ => ("badge-pending", b.Status ?? "")
+                                    };
+                                }
+                                <span class="badge-status @badgeClass">@badgeText</span>
+                            </td>
+                            <td style="color:var(--gray-500);">@b.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

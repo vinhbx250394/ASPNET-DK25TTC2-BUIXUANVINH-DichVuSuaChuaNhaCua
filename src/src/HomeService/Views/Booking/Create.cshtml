@@ -1,0 +1,109 @@
+@model HomeService.Models.Booking
+@{
+    ViewBag.Title = "Đặt lịch";
+    var service = ViewBag.Service as HomeService.Models.Service;
+}
+
+<div class="page-content">
+    <div class="breadcrumb-nav">
+        <a href="@Url.Action("Index","Home")"><i class="bi bi-house"></i></a>
+        <i class="bi bi-chevron-right separator"></i>
+        <a href="@Url.Action("Services","Home")">Dịch vụ</a>
+        <i class="bi bi-chevron-right separator"></i>
+        <span class="current">Đặt lịch</span>
+    </div>
+
+    <div class="row g-4">
+        <!-- Service Info Sidebar -->
+        <div class="col-lg-4">
+            <div class="detail-sidebar-card">
+                <img src="https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=600&q=80"
+                     style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:1rem;" alt="@service?.Title" />
+                <h5 style="font-size:1rem;">@service?.Title</h5>
+                <span class="badge-info mb-2 d-inline-block">
+                    @service?.Category?.Name
+                </span>
+                <div class="price">
+                    @service?.Price?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) đ
+                </div>
+                <ul class="detail-checklist">
+                    <li><i class="bi bi-check-circle-fill"></i>Tư vấn miễn phí</li>
+                    <li><i class="bi bi-check-circle-fill"></i>Báo giá chi tiết</li>
+                    <li><i class="bi bi-check-circle-fill"></i>Bảo hành 12 tháng</li>
+                    <li><i class="bi bi-check-circle-fill"></i>Thợ chuyên nghiệp</li>
+                </ul>
+                <a href="@Url.Action("ServiceDetails","Home", new { id = service?.Id })"
+                   class="btn btn-outline-primary w-100 mt-2 btn-sm">
+                    <i class="bi bi-arrow-left me-1"></i>Quay lại
+                </a>
+            </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">
+                        <i class="bi bi-calendar-plus text-primary me-2"></i>Thông tin đặt lịch
+                    </h4>
+
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <div>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <form method="post">
+                        <input type="hidden" name="ServiceId" value="@service?.Id" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Họ và tên *</label>
+                                <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Số điện thoại *</label>
+                                <input asp-for="Phone" class="form-control" placeholder="0xxx xxx xxx" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Địa chỉ *</label>
+                            <input asp-for="Address" class="form-control" placeholder="Số nhà, đường, phường/xã, quận/huyện" required />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ngày hẹn *</label>
+                                <input asp-for="ScheduleDate" type="date" class="form-control" required
+                                       min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Ghi chú yêu cầu</label>
+                            <textarea asp-for="Content" class="form-control" rows="4"
+                                      placeholder="Mô tả chi tiết vấn đề hoặc yêu cầu của bạn..."></textarea>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <a href="@Url.Action("ServiceDetails","Home", new { id = service?.Id })" class="btn btn-outline-secondary px-4">
+                                Hủy
+                            </a>
+                            <button class="btn btn-accent flex-grow-1" type="submit">
+                                <i class="bi bi-check-lg me-2"></i>Xác nhận đặt lịch
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

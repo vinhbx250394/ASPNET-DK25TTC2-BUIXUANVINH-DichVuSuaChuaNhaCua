@@ -1,0 +1,115 @@
+@model HomeService.Models.Booking
+@{
+    ViewBag.Title = "Tạo đơn mới";
+    var services = ViewBag.Services as List<HomeService.Models.Service>;
+}
+
+<div class="page-header">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h1><i class="bi bi-calendar-plus me-2"></i>Tạo đơn mới</h1>
+            <p>Điền thông tin để đặt dịch vụ nhanh chóng</p>
+        </div>
+        <a href="@Url.Action("MyBookings","Booking")" class="btn btn-light">
+            <i class="bi bi-arrow-left me-1"></i>Quay lại
+        </a>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body" style="padding:2rem;">
+                    <div class="text-center mb-4">
+                        <div class="feature-icon-wrap feature-icon-blue mb-3" style="margin:0 auto 1rem;">
+                            <i class="bi bi-lightning-charge"></i>
+                        </div>
+                        <h4>Đặt dịch vụ nhanh</h4>
+                        <p style="font-size:.85rem;color:var(--gray-500);">Chỉ mất 30 giây để tạo đơn</p>
+                    </div>
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger mb-3">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <span>@TempData["Error"]</span>
+                        </div>
+                    }
+
+                    <form method="post" action="@Url.Action("CreateQuick","Booking")">
+                        <!-- Chọn dịch vụ -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-grid me-1 text-primary"></i>Chọn dịch vụ *
+                            </label>
+                            <select name="serviceId" class="form-select" required>
+                                <option value="">-- Chọn dịch vụ --</option>
+                                @{
+                                    var grouped = services!
+                                        .GroupBy(s => s.Category?.Name ?? "Khác")
+                                        .OrderBy(g => g.Key);
+                                }
+                                @foreach (var group in grouped)
+                                {
+                                    <optgroup label="@group.Key">
+                                        @foreach (var svc in group)
+                                        {
+                                            <option value="@svc.Id" data-price="@svc.Price" data-cat="@svc.Category?.Name">
+                                                @svc.Title — @svc.Price?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) đ
+                                            </option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Thông tin khách hàng -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-person me-1 text-primary"></i>Họ và tên *
+                                </label>
+                                <input type="text" name="fullName" class="form-control" placeholder="Nhập họ và tên" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-telephone me-1 text-primary"></i>Số điện thoại *
+                                </label>
+                                <input type="tel" name="phone" class="form-control" placeholder="0xxx xxx xxx" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-geo-alt me-1 text-primary"></i>Địa chỉ
+                            </label>
+                            <input type="text" name="address" class="form-control" placeholder="Số nhà, đường, phường/xã, quận/huyện" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-calendar3 me-1 text-primary"></i>Ngày hẹn
+                            </label>
+                            <input type="date" name="scheduleDate" class="form-control"
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                   value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-chat-left-text me-1 text-primary"></i>Ghi chú
+                            </label>
+                            <textarea name="content" class="form-control" rows="4"
+                                      placeholder="Mô tả chi tiết vấn đề hoặc yêu cầu của bạn..."></textarea>
+                        </div>
+
+                        <button class="btn btn-accent w-100 py-3 fw-bold" type="submit">
+                            <i class="bi bi-check-circle me-2"></i>Xác nhận đặt lịch
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
