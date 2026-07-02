@@ -143,6 +143,17 @@ home-service/
 
 ### Khách hàng
 
+| Trang | URL |
+|---|---|
+| Trang chủ | `/` hoặc `/Home` |
+| Dịch vụ (có lọc danh mục) | `/Home/Services` |
+| Chi tiết dịch vụ | `/Home/ServiceDetails/{id}` |
+| Liên hệ | `/Home/Contact` |
+| Đăng nhập | `/Account/Login` |
+| Đăng ký | `/Account/Register` |
+| Đơn của tôi | `/Booking/MyBookings` *(cần đăng nhập)* |
+| Tạo đơn nhanh | `/Booking/CreateQuick` *(cần đăng nhập)* |
+| Đặt lịch | `/Booking/Create?serviceId={id}` *(cần đăng nhập)* |
 ### Quản trị viên (Admin)
 
 | Trang | URL |
