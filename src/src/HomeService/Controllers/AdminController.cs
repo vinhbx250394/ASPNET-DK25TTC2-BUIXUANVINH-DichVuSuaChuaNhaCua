@@ -50,14 +50,6 @@ namespace HomeService.Controllers
             return View(service);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditService(Service model)
-        {
-            if (!ModelState.IsValid) return View(model);
-            _context.Services.Update(model);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Services");
-        }
 
         public async Task<IActionResult> DeleteService(int id)
         {
