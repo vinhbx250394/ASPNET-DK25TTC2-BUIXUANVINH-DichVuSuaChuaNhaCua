@@ -41,7 +41,7 @@ CREATE TABLE Bookings (
     CreatedAt DATETIME NOT NULL DEFAULT GETDATE()
 );
 
--- Seed categories
+--- Seed categories
 INSERT INTO Categories (Name) VALUES
 ('Sửa điện'),
 ('Sửa nước'),
